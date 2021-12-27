@@ -6,7 +6,7 @@ orbs:
   docker: circleci/docker@1.5.0
   terraform: circleci/terraform@3.0.0
 jobs:
-  build-test:
+  run-test:
     docker:
       - image: cimg/node:14.16.0
     steps:
@@ -23,7 +23,7 @@ jobs:
           path: test/
       - store_artifacts:
           path: test-results
-  build:
+  scan_app:
     docker:
       - image: cimg/node:14.16.0
     steps:
@@ -34,3 +34,16 @@ jobs:
       - snyk/scan:
           fail-on-issues: false
           monitor-on-build: false
+  build: #build_docker_image:
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+    steps:
+      - checkout  
+      - docker/check
+      - docker/build:
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          tag: 0.1.<< pipeline.number >>
+      - docker/push:
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          tag: 0.1.<< pipeline.number >>
