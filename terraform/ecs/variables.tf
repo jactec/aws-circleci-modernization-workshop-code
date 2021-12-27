@@ -2,16 +2,16 @@ variable "availability_zones" {
   type        = list(string)
   description = "AWS Availability Zones"
   default = [
-    "us-east-1a",
-    "us-east-1b",
-    "us-east-1c",
-    "us-east-1e",
+    "us-east-2a",
+    "us-east-2b",
+    "us-east-2c",
+    "us-east-2e",
   ]
 }
 
 variable "key_pair" {
   description = "AWS EC2 Key Pair Pem"
-  default     = "ee-default-keypair"
+  default     = "helloCI"
 }
 
 variable "ami" {
